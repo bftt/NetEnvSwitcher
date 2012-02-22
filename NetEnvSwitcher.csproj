@@ -56,7 +56,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>GuardServerStarter.exe.manifest</ApplicationManifest>
+    <ApplicationManifest>NetEnvSwitcher.exe.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>C1875CFC8EE62C9E235DD3FD7C7FE19B330BF1C0</ManifestCertificateThumbprint>
@@ -162,9 +162,8 @@
     <Content Include="delete_files.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
-    <None Include="GuardServerStarter.exe.manifest" />
-    <None Include="GuardServerStarter_TemporaryKey.pfx" />
+    <None Include="NetEnvSwitcher.exe.manifest" />
+    <None Include="NetEnvSwitcher.pfx" />
     <Content Include="Mantis.NoGS.ttmd.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
