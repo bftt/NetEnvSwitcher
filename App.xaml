@@ -7,11 +7,14 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/Brushes.xaml"/>
+
+                <ResourceDictionary Source="ExpressionLight/Theme.xaml" />
+                
+                <!--<ResourceDictionary Source="Skins/Brushes.xaml"/>
                 <ResourceDictionary Source="Skins/CoreStyles.xaml"/>
                 <ResourceDictionary Source="Skins/Fonts.xaml"/>
                 <ResourceDictionary Source="Skins/SDKStyles.xaml"/>
-                <ResourceDictionary Source="Skins/Styles.xaml"/>
+                <ResourceDictionary Source="Skins/Styles.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
