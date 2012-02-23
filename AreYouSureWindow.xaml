@@ -1,0 +1,30 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="NetEnvSwitcher.AreYouSureWindow"
+    x:Name="Window"
+    Title="Are you sure?"
+    Width="Auto" Height="Auto"
+    ResizeMode="NoResize"
+    Icon="{x:Null}"
+    ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterOwner"
+    TextOptions.TextFormattingMode="Display">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="310"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="1">
+            <TextBlock HorizontalAlignment="Center" FontSize="48">Are you sure?</TextBlock>
+            <TextBlock HorizontalAlignment="Center">Did you make sure no TT apps are runnig?</TextBlock>
+            <TextBlock HorizontalAlignment="Center">Proceed with the environment switch?</TextBlock>
+            <Button x:Name="CancelButton" Margin="10,50,10,10" Foreground="#FFE02424" IsCancel="True" IsDefault="True" Click="CancelButton_Click">Oh wait! No! Abort! Abort!</Button>
+            <Button x:Name="OkButton" Margin="10" Click="OkButton_Click">Yes, do the switch</Button>
+        </StackPanel>
+        <Image VerticalAlignment="Top" Source="AreYouSure.jpg"/>
+    </Grid>
+</Window>

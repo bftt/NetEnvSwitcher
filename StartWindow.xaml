@@ -12,30 +12,31 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Expander x:Name="LogExpander"
-                  ExpandDirection="Right"
-                  Grid.Column="1"
-                  IsExpanded="True"
-                  Expanded="Expander_Expanded"
-                  Collapsed="Expander_Collapsed">
+        <Grid Grid.Column="1">
+            <Expander x:Name="LogExpander"
+                ExpandDirection="Right"
+                IsExpanded="True"
+                Expanded="Expander_Expanded"
+                Collapsed="Expander_Collapsed" Grid.Column="1">
                   <!--Margin="-25,0,0,0">-->
 
-            <Expander.Header>
-                <TextBlock Text="Log" RenderTransformOrigin="0.5,0.5" >
-                    <TextBlock.RenderTransform>
-                        <RotateTransform Angle="-90"/>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-            </Expander.Header>
+                <Expander.Header>
+                    <TextBlock Text="Log" RenderTransformOrigin="0.5,0.5" >
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="-90"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Expander.Header>
 
-            <Grid>
-                <FlowDocumentScrollViewer x:Name="LogDocViewer">
-                    <FlowDocument PageWidth="2000" FontFamily="Consolas" FontSize="12" Background="Black">
-                        <Paragraph x:Name="LogParagraph" />
-                    </FlowDocument>
-                </FlowDocumentScrollViewer>
-            </Grid>
-        </Expander>
+                <Grid>
+                    <FlowDocumentScrollViewer x:Name="LogDocViewer">
+                        <FlowDocument PageWidth="2000" FontFamily="Consolas" FontSize="12" Background="Black">
+                            <Paragraph x:Name="LogParagraph" />
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer>
+                </Grid>
+            </Expander>
+        </Grid>
 
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
@@ -80,9 +81,7 @@
                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <TextBlock FontSize="14" Text="{Binding Name}" TextAlignment="Center" />
                                     <TextBlock Text="{Binding Multicast}" TextAlignment="Center" Visibility="{Binding Multicast, Converter={StaticResource TextLengthToVisibilityConverter}}" />
-                                    <TextBlock TextAlignment="Center" Visibility="{Binding RemoteDaemon, Converter={StaticResource TextLengthToVisibilityConverter}}">
-                                        <Run Text="remote: " /><Run Text="{Binding RemoteDaemon}" />
-                                    </TextBlock>
+                                    <TextBlock TextAlignment="Center" Visibility="{Binding RemoteDaemon, Converter={StaticResource TextLengthToVisibilityConverter}}"><Run Text="remote: " /><Run Text="{Binding RemoteDaemon}" /></TextBlock>
                                 </StackPanel>
                             </Button>
                         </DataTemplate>

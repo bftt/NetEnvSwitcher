@@ -67,9 +67,13 @@ namespace NetEvnSwitcher
         void startService(ServiceController service)
         {
             _logger.WriteLine("Starting {0} service", service.DisplayName);
-            if (service.Status != ServiceControllerStatus.Running)
+            if (service.Status != ServiceControllerStatus.Running &&
+                service.Status != ServiceControllerStatus.StartPending)
             {
-                service.Start();
+                if (service.Status != ServiceControllerStatus.StartPending)
+                {
+                    service.Start();
+                }
                 service.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, _serviceWaitTimeout);
             }
         }
@@ -77,9 +81,13 @@ namespace NetEvnSwitcher
         void stopService(ServiceController service)
         {
             _logger.WriteLine("Stopping {0} service", service.DisplayName);
-            if (service.Status != ServiceControllerStatus.Stopped)
+            if (service.Status != ServiceControllerStatus.Stopped &&
+                service.Status != ServiceControllerStatus.StopPending)
             {
-                service.Stop();
+                if (service.Status != ServiceControllerStatus.StopPending)
+                {
+                    service.Stop();
+                }
                 service.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, _serviceWaitTimeout);
             }
         }

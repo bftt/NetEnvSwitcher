@@ -17,7 +17,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>4.0.20901.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>4.0.30816.0</ExpressionBlendVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
@@ -97,6 +97,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreYouSureWindow.xaml.cs">
+      <DependentUpon>AreYouSureWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BannedProcessManager.cs" />
+    <Compile Include="RunningAppsWindow.xaml.cs">
+      <DependentUpon>RunningAppsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TextLengthToVisibilityConverter.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,6 +121,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="AreYouSureWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RunningAppsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Skins\Brushes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -162,6 +178,9 @@
     <Content Include="delete_files.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="banned_apps.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="NetEnvSwitcher.exe.manifest" />
     <None Include="NetEnvSwitcher.pfx" />
     <Content Include="Mantis.NoGS.ttmd.cfg">
@@ -181,6 +200,8 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="AreYouSure.jpg" />
+    <Resource Include="CloseAllTheApps.jpg" />
     <Resource Include="tt_yel.ico" />
   </ItemGroup>
   <ItemGroup>

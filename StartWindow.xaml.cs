@@ -22,6 +22,7 @@ namespace NetEvnSwitcher
     {
         readonly EnvironmentConfigManager _envManager;
         readonly ServiceManager _serviceManager;
+        readonly BannedProcessManager _bannedProcManager;
         readonly DispatcherTimer _timer;
 
         IList<EnvironmentConfig> _environments = null;
@@ -33,6 +34,7 @@ namespace NetEvnSwitcher
 
             _envManager = new EnvironmentConfigManager(this);
             _serviceManager = new ServiceManager(this);
+            _bannedProcManager = new BannedProcessManager();
 
             _timer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
             _timer.Interval = TimeSpan.FromSeconds(60);
@@ -153,51 +155,80 @@ namespace NetEvnSwitcher
 
         private void switchConfigurations(EnvironmentConfig config)
         {
-            ConfigurationsPanel.IsEnabled = false;
+            var w = new NetEnvSwitcher.AreYouSureWindow();
+            w.Owner = this;
+            w.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 
-            WriteLine("======== Switching configuration to " + config.Name);
+            if (w.ShowDialog() == true)
+            {
+                ConfigurationsPanel.IsEnabled = false;
 
-            var t = new System.Threading.Tasks.Task(() =>
-                {
-                    try
+                var t = new System.Threading.Tasks.Task(() =>
                     {
-                        _serviceManager.StopServices();
+                        try
+                        {
+                            WriteLine("======== Switching configuration to " + config.Name);
 
-                        _envManager.SwitchTo(config);
-
-                        _envManager.ResetAConfigRevisionCount();
-
-                        WriteLine("Sleeping for 5 seconds for good measure...");
-                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
-
-                        _serviceManager.StartServices(config.IsGuardServerAllowed);
-                        WriteLine("======== Finished switching configuration to " + config.Name);
-
-                        Dispatcher.BeginInvoke(new Action(() =>
+                            var bannedProcessesRunning = _bannedProcManager.GetBannedProcessesRunning();
+                            if (bannedProcessesRunning.Count == 0)
                             {
-                                ConfigurationsPanel.IsEnabled = true;
-                                getServerStatuses();
-                            }));
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLine("!!!!!!!! Problem switching configuration to " + config.Name);
 
-                        while (ex != null)
-                        {
-                            WriteLine(ex.ToString());
-                            ex = ex.InnerException;
+                                _serviceManager.StopServices();
+
+                                _envManager.SwitchTo(config);
+
+                                _envManager.ResetAConfigRevisionCount();
+
+                                WriteLine("Sleeping for 3 seconds for good measure...");
+                                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+
+                                _serviceManager.StartServices(config.IsGuardServerAllowed);
+
+                                WriteLine("======== Finished switching configuration to " + config.Name);
+                            }
+                            else
+                            {
+                                WriteLine("PROBLEM: You need to stop apps before switching!");
+                                foreach (var p in bannedProcessesRunning)
+                                {
+                                    WriteLine(" -> " + p.ProcessName);
+                                }
+
+                                Dispatcher.BeginInvoke(new Action(() =>
+                                    {
+                                        var window = new NetEnvSwitcher.RunningAppsWindow(bannedProcessesRunning);
+                                        window.Owner = this;
+                                        window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+                                        window.ShowDialog();
+                                    }));
+                            }
+
+                            refreshGuiAfterOperation();
                         }
-
-                        Dispatcher.BeginInvoke(new Action(() =>
+                        catch (Exception ex)
                         {
-                            ConfigurationsPanel.IsEnabled = true;
-                            getServerStatuses();
-                        }));
-                    }
-                });
+                            WriteLine("!!!!!!!! Problem switching configuration to " + config.Name);
 
-            t.Start();
+                            while (ex != null)
+                            {
+                                WriteLine(ex.ToString());
+                                ex = ex.InnerException;
+                            }
+
+                            refreshGuiAfterOperation();
+                        }
+                    });
+                t.Start();
+            }
+        }
+
+        void refreshGuiAfterOperation()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ConfigurationsPanel.IsEnabled = true;
+                getServerStatuses();
+            }));
         }
 
         RandomPastelColorGenerator _gen = new RandomPastelColorGenerator();
@@ -342,28 +373,6 @@ namespace NetEvnSwitcher
             }
 
             return border.Child as ScrollViewer;
-        }
-    }
-
-
-    public class TextLengthToVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value == null)
-            {
-                return Visibility.Collapsed;
-            }
-
-            string v = value.ToString().Trim();
-            return String.IsNullOrEmpty(v)
-                ? Visibility.Collapsed
-                : Visibility.Visible;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 
