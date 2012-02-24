@@ -3,7 +3,6 @@
         xmlns:local="clr-namespace:NetEnvSwitcher"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
         x:Class="NetEnvSwitcher.StartWindow"
         Title="NetEnvSwitcher" Height="420" mc:Ignorable="d" Width="800"
         TextOptions.TextFormattingMode="Display"
@@ -35,30 +34,27 @@
                     <FlowDocumentScrollViewer x:Name="LogDocViewer" TextOptions.TextFormattingMode="Ideal" IsManipulationEnabled="True" MaxZoom="500">
                         <FlowDocument PageWidth="2000" FontFamily="Consolas" FontSize="12" Background="White" TextAlignment="Left">
                             <Paragraph x:Name="VersionParagraph" FontSize="20">NetAppSwitcher version 1.0.0.0</Paragraph>
-                            <Paragraph>
-                                <InlineUIContainer>	
-                                <Grid RenderTransformOrigin="0.5,0.5">
-                                    <Grid.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="-13"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </Grid.RenderTransform>
-                                    <ed:BlockArrow Height="92" Orientation="Left" Width="254" >
-                                        <ed:BlockArrow.Fill>
-                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                                                <GradientStop Color="#FF49FF75" Offset="0"/>
-                                                <GradientStop Color="White" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </ed:BlockArrow.Fill>
-                                    </ed:BlockArrow>
-                                    <TextBlock Text="Use buttons to switch environments" Margin="22,35,-22,-35" />									
-                                </Grid>
-                                </InlineUIContainer>
-                            </Paragraph>
-                            <Paragraph x:Name="LogParagraph" />
+							
+							<Paragraph/>
+                            
+                            <Paragraph x:Name="LogParagraph" ><InlineUIContainer>
+									<Grid
+                            
+                            RenderTransformOrigin="0.5,0.5">
+                            
+										
+                            
+										<Path
+                            
+                            Width="15" Height="15" Stroke="#FF046A18" StrokeThickness="3.5" Stretch="Uniform" UseLayoutRounding="False" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="F1 M 328.101,80.0001L 80,328.101L 328.101,576.203" HorizontalAlignment="Left"/>
+                            
+										<TextBlock
+                            
+                            Text="Use buttons to switch environments" Margin="19,0,-19,0" d:LayoutOverrides="VerticalAlignment" Foreground="#FF046A18"/>
+                            
+									</Grid>
+                            
+								</InlineUIContainer></Paragraph>
                         </FlowDocument>
                     </FlowDocumentScrollViewer>
                 </Grid>
@@ -100,8 +96,8 @@
             <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="ConfigurationsPanel">
                     <StackPanel.Resources>
-
-                        <local:TextLengthToVisibilityConverter x:Key="TextLengthToVisibilityConverter" />
+                    	
+						<local:TextLengthToVisibilityConverter x:Key="TextLengthToVisibilityConverter" />
 
                         <DataTemplate DataType="{x:Type local:EnvironmentConfig}">
                             <Button Margin="5">

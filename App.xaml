@@ -14,6 +14,8 @@
                 <ResourceDictionary Source="Skins/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
+        
 
     </Application.Resources>
 </Application>
