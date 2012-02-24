@@ -175,6 +175,25 @@ namespace NetEnvSwitcher
             dom.Save(aconfigFile);
         }
 
+        public void LaunchGuardianMFC()
+        {
+            string path = Path.Combine(_installDirectory, "guardian", "GuardianMFC.exe");
+            try
+            {
+                System.Diagnostics.Process.Start(path);
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteLine(ex.Message);
+
+                while (ex != null)
+                {
+                    _logger.WriteLine(ex.ToString());
+                    ex = ex.InnerException;
+                }
+            }
+        }
+
 
         private string _installDirectory = null;
         private string _configDirectory = null;

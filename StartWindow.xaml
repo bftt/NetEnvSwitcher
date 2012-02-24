@@ -14,53 +14,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1">
-            <Expander x:Name="LogExpander"
-                ExpandDirection="Right"
-                IsExpanded="True"
-                Expanded="Expander_Expanded"
-                Collapsed="Expander_Collapsed" Grid.Column="1">
-                  <!--Margin="-25,0,0,0">-->
-
-                <Expander.Header>
-                    <TextBlock Text="Log" RenderTransformOrigin="0.5,0.5" >
-                        <TextBlock.RenderTransform>
-                            <RotateTransform Angle="-90"/>
-                        </TextBlock.RenderTransform>
-                    </TextBlock>
-                </Expander.Header>
-
-                <Grid>
-                    <FlowDocumentScrollViewer x:Name="LogDocViewer" TextOptions.TextFormattingMode="Ideal" IsManipulationEnabled="True" MaxZoom="500">
-                        <FlowDocument PageWidth="2000" FontFamily="Consolas" FontSize="12" Background="White" TextAlignment="Left">
-                            <Paragraph x:Name="VersionParagraph" FontSize="20">NetAppSwitcher version 1.0.0.0</Paragraph>
-							
-							<Paragraph/>
-                            
-                            <Paragraph x:Name="LogParagraph" ><InlineUIContainer>
-									<Grid
-                            
-                            RenderTransformOrigin="0.5,0.5">
-                            
-										
-                            
-										<Path
-                            
-                            Width="15" Height="15" Stroke="#FF046A18" StrokeThickness="3.5" Stretch="Uniform" UseLayoutRounding="False" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="F1 M 328.101,80.0001L 80,328.101L 328.101,576.203" HorizontalAlignment="Left"/>
-                            
-										<TextBlock
-                            
-                            Text="Use buttons to switch environments" Margin="19,0,-19,0" d:LayoutOverrides="VerticalAlignment" Foreground="#FF046A18"/>
-                            
-									</Grid>
-                            
-								</InlineUIContainer></Paragraph>
-                        </FlowDocument>
-                    </FlowDocumentScrollViewer>
-                </Grid>
-            </Expander>
-        </Grid>
-
+        
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -96,8 +50,8 @@
             <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="ConfigurationsPanel">
                     <StackPanel.Resources>
-                    	
-						<local:TextLengthToVisibilityConverter x:Key="TextLengthToVisibilityConverter" />
+                        
+                        <local:TextLengthToVisibilityConverter x:Key="TextLengthToVisibilityConverter" />
 
                         <DataTemplate DataType="{x:Type local:EnvironmentConfig}">
                             <Button Margin="5">
@@ -121,9 +75,61 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-
-
         
+        <Grid Grid.Column="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Opacity="0.5">
+                <StackPanel.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </StackPanel.LayoutTransform>
 
+                
+                <Button x:Name="GuardianButton" Margin="0,0,5,0" Click="GuardianButton_Click">Guardian</Button>
+                <Button x:Name="ClearLogButton" Margin="0,0,5,0" Click="ClearLogButton_Click">Clear log</Button>
+                <ToggleButton x:Name="toggleButton" Content="Log" Margin="0,0,2,0" IsChecked="True" />
+            </StackPanel>
+            
+            
+            <Expander x:Name="LogExpander"
+                ExpandDirection="Right"
+                IsExpanded="{Binding IsChecked, ElementName=toggleButton}"
+                Expanded="Expander_Expanded"
+                Collapsed="Expander_Collapsed" Grid.Column="1"
+                Header="{x:Null}" Style="{DynamicResource ExpanderWithoutArrowStyle}">
+                <Grid>
+                    <FlowDocumentScrollViewer x:Name="LogDocViewer" TextOptions.TextFormattingMode="Ideal" IsManipulationEnabled="True" MaxZoom="500">
+                        <FlowDocument PageWidth="2000" FontFamily="Consolas" FontSize="12" Background="White" TextAlignment="Left">
+                            <Paragraph>
+                                <StackPanel>
+                                    <Image Source="system-software-update.ico" Width="200" />
+                                    <TextBlock x:Name="VersionTextBlock" FontSize="20">NetAppSwitcher version 1.0.0.0</TextBlock>
+                                </StackPanel>
+                            </Paragraph>
+                            
+                            <Paragraph>
+                                <InlineUIContainer>
+                                    <Grid RenderTransformOrigin="0.5,0.5" Margin="0">
+                                        <Path Width="15" Height="15" Stroke="#FF046A18" StrokeThickness="3.5" Stretch="Uniform" UseLayoutRounding="False" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="F1 M 328.101,80.0001L 80,328.101L 328.101,576.203" HorizontalAlignment="Left"/>                            
+                                        <TextBlock Text="Use buttons to switch environments" Margin="19,0,-19,0" d:LayoutOverrides="VerticalAlignment" Foreground="#FF046A18"/>
+                                    </Grid>
+                                </InlineUIContainer>								
+                            </Paragraph>
+                            
+                            <Paragraph x:Name="LogParagraph" />
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer>
+                </Grid>
+            </Expander>
+        </Grid>
     </Grid>
 </Window>

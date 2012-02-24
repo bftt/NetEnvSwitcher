@@ -121,9 +121,7 @@ namespace NetEnvSwitcher
 
         void StartWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //LogExpander.IsExpanded = false;
-            VersionParagraph.Inlines.Clear();
-            VersionParagraph.Inlines.Add("NetEnvSwitcher version " + GetType().Assembly.GetName().Version.ToString());
+            VersionTextBlock.Text = "NetEnvSwitcher version " + GetType().Assembly.GetName().Version.ToString();
         }
 
         void setupConfigurationButtons()
@@ -407,6 +405,16 @@ namespace NetEnvSwitcher
             }
 
             return border.Child as ScrollViewer;
+        }
+
+        private void GuardianButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _envManager.LaunchGuardianMFC();
+        }
+
+        private void ClearLogButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            LogParagraph.Inlines.Clear();
         }
     }
 
