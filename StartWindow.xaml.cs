@@ -121,7 +121,9 @@ namespace NetEvnSwitcher
 
         void StartWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            LogExpander.IsExpanded = false;
+            //LogExpander.IsExpanded = false;
+            VersionParagraph.Inlines.Clear();
+            VersionParagraph.Inlines.Add("NetEnvSwitcher version " + GetType().Assembly.GetName().Version.ToString());
         }
 
         void setupConfigurationButtons()
@@ -153,22 +155,23 @@ namespace NetEvnSwitcher
             }
         }
 
-        Image _missionAccomplishedImage;
+        ImageSource _missionAccomplishedImageSource;
         private void addMissionAccomplishedImage()
         {
             Dispatcher.BeginInvoke(new Action( () =>
             {
-                if (_missionAccomplishedImage == null)
+                if (_missionAccomplishedImageSource == null)
                 {
-                    _missionAccomplishedImage = new Image();
-                    _missionAccomplishedImage.Source = new BitmapImage(new Uri("pack://application:,,,/NetEnvSwitcher;component/MissionAccomplished.jpg", UriKind.Absolute));
-                    _missionAccomplishedImage.Width = 200;
-                    _missionAccomplishedImage.Height = 200;
-                    _missionAccomplishedImage.Margin = new Thickness(10);
-
+                    _missionAccomplishedImageSource = new BitmapImage(new Uri("pack://application:,,,/NetEnvSwitcher;component/MissionAccomplished.jpg", UriKind.Absolute));
                 }
 
-                LogParagraph.Inlines.Add(_missionAccomplishedImage);
+                var img = new Image();
+                img.Source = _missionAccomplishedImageSource;
+                img.Width = 200;
+                img.Height = 200;
+                img.Margin = new Thickness(10);
+
+                LogParagraph.Inlines.Add(img);
                 LogParagraph.Inlines.Add(new LineBreak());
             }));
         }
@@ -184,13 +187,20 @@ namespace NetEvnSwitcher
                 ConfigurationsPanel.IsEnabled = false;
 
                 LogParagraph.Inlines.Add(new LineBreak());
+
+                var rect = new Rectangle();
+                rect.Fill = Brushes.Gray;
+                rect.Width = 600;
+                rect.Height = 1;
+                rect.Margin = new Thickness(0, 10, 0, 10);
+                LogParagraph.Inlines.Add(rect);
                 LogParagraph.Inlines.Add(new LineBreak());
 
                 var t = new System.Threading.Tasks.Task(() =>
                     {
                         try
                         {
-                            WriteLine("======== Switching configuration to " + config.Name);
+                            WriteLine("======== Switching to " + config.Name);
 
                             var bannedProcessesRunning = _bannedProcManager.GetBannedProcessesRunning();
                             if (bannedProcessesRunning.Count == 0)
@@ -202,12 +212,12 @@ namespace NetEvnSwitcher
 
                                 _envManager.ResetAConfigRevisionCount();
 
-                                WriteLine("Sleeping for 3 seconds for good measure...");
+                                WriteLine("Sleeping 3 seconds for good measure...");
                                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
 
                                 _serviceManager.StartServices(config.IsGuardServerAllowed);
 
-                                WriteLine("======== Finished switching configuration to " + config.Name);
+                                WriteLine("======== Switched to " + config.Name);
                                 addMissionAccomplishedImage();
                             }
                             else
@@ -231,7 +241,7 @@ namespace NetEvnSwitcher
                         }
                         catch (Exception ex)
                         {
-                            WriteLine("!!!!!!!! Problem switching configuration to " + config.Name);
+                            WriteLine("!!!!!!!! Problem switching to " + config.Name);
 
                             while (ex != null)
                             {

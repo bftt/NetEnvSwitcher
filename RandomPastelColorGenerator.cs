@@ -27,7 +27,7 @@ namespace NetEvnSwitcher
         {
             // seed the generator with 3 because
             // this gives a good sequence of colors
-            const int RandomSeed = 3;
+            const int RandomSeed = 5;
             _random = new Random(RandomSeed);
         }
 
@@ -54,9 +54,9 @@ namespace NetEvnSwitcher
             // take a random integer between 0 & 128 (rather than between 0 and 255)
             // and then add 127 to make the colour lighter
             byte[] colorBytes = new byte[3];
-            colorBytes[0] = (byte)(_random.Next(128) + 127);
-            colorBytes[1] = (byte)(_random.Next(128) + 127);
-            colorBytes[2] = (byte)(_random.Next(128) + 127);
+            colorBytes[0] = (byte)(_random.Next(128) + 50);
+            colorBytes[1] = (byte)(_random.Next(128) + 30);
+            colorBytes[2] = (byte)(_random.Next(128) + 40);
 
             Color color = new Color();
 

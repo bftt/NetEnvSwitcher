@@ -925,7 +925,7 @@
 		<Setter Property="VerticalContentAlignment" Value="Top"/>
 		<Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
 		<Setter Property="Padding" Value="4"/>
-		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderThickness" Value="0"/>
 		<Setter Property="BorderBrush">
 			<Setter.Value>
 				<SolidColorBrush Color="{StaticResource Gray4}"/>
