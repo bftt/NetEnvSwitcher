@@ -33,17 +33,29 @@ namespace NetEvnSwitcher
 
         public ServiceControllerStatus GuardServerStatus
         {
-            get { return _guardServerController.Status; }
+            get
+            {
+                _guardServerController.Refresh();
+                return _guardServerController.Status;
+            }
         }
 
         public ServiceControllerStatus GuardianStatus
         {
-            get { return _guardianController.Status; }
+            get
+            {
+                _guardianController.Refresh();
+                return _guardianController.Status;
+            }
         }
 
         public ServiceControllerStatus TtmStatus
         {
-            get { return _ttmController.Status; }
+            get
+            {
+                _ttmController.Refresh();
+                return _ttmController.Status;
+            }
         }
 
         public void StartServices(bool startGuardServer)
@@ -67,6 +79,8 @@ namespace NetEvnSwitcher
         void startService(ServiceController service)
         {
             _logger.WriteLine("Starting {0} service", service.DisplayName);
+
+            service.Refresh();
             if (service.Status != ServiceControllerStatus.Running &&
                 service.Status != ServiceControllerStatus.StartPending)
             {
@@ -81,6 +95,8 @@ namespace NetEvnSwitcher
         void stopService(ServiceController service)
         {
             _logger.WriteLine("Stopping {0} service", service.DisplayName);
+
+            service.Refresh();
             if (service.Status != ServiceControllerStatus.Stopped &&
                 service.Status != ServiceControllerStatus.StopPending)
             {
@@ -91,7 +107,5 @@ namespace NetEvnSwitcher
                 service.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, _serviceWaitTimeout);
             }
         }
-
-        
     }
 }

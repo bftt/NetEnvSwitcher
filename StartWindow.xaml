@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:NetEvnSwitcher"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="NetEvnSwitcher.StartWindow"
         Title="NetEnvSwitcher" Height="420" Width="800"
-        TextOptions.TextFormattingMode="Display" Icon="tt_yel.ico"
+        TextOptions.TextFormattingMode="Display" Icon="pack://siteoforigin:,,,/system-software-update.ico"
         >
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -29,7 +29,7 @@
                 </Expander.Header>
 
                 <Grid>
-                    <FlowDocumentScrollViewer x:Name="LogDocViewer">
+                    <FlowDocumentScrollViewer x:Name="LogDocViewer" TextOptions.TextFormattingMode="Ideal">
                         <FlowDocument PageWidth="2000" FontFamily="Consolas" FontSize="12" Background="Black">
                             <Paragraph x:Name="LogParagraph" />
                         </FlowDocument>

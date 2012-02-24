@@ -153,6 +153,26 @@ namespace NetEvnSwitcher
             }
         }
 
+        Image _missionAccomplishedImage;
+        private void addMissionAccomplishedImage()
+        {
+            Dispatcher.BeginInvoke(new Action( () =>
+            {
+                if (_missionAccomplishedImage == null)
+                {
+                    _missionAccomplishedImage = new Image();
+                    _missionAccomplishedImage.Source = new BitmapImage(new Uri("pack://application:,,,/NetEnvSwitcher;component/MissionAccomplished.jpg", UriKind.Absolute));
+                    _missionAccomplishedImage.Width = 200;
+                    _missionAccomplishedImage.Height = 200;
+                    _missionAccomplishedImage.Margin = new Thickness(10);
+
+                }
+
+                LogParagraph.Inlines.Add(_missionAccomplishedImage);
+                LogParagraph.Inlines.Add(new LineBreak());
+            }));
+        }
+
         private void switchConfigurations(EnvironmentConfig config)
         {
             var w = new NetEnvSwitcher.AreYouSureWindow();
@@ -162,6 +182,9 @@ namespace NetEvnSwitcher
             if (w.ShowDialog() == true)
             {
                 ConfigurationsPanel.IsEnabled = false;
+
+                LogParagraph.Inlines.Add(new LineBreak());
+                LogParagraph.Inlines.Add(new LineBreak());
 
                 var t = new System.Threading.Tasks.Task(() =>
                     {
@@ -185,6 +208,7 @@ namespace NetEvnSwitcher
                                 _serviceManager.StartServices(config.IsGuardServerAllowed);
 
                                 WriteLine("======== Finished switching configuration to " + config.Name);
+                                addMissionAccomplishedImage();
                             }
                             else
                             {
@@ -198,7 +222,7 @@ namespace NetEvnSwitcher
                                     {
                                         var window = new NetEnvSwitcher.RunningAppsWindow(bannedProcessesRunning);
                                         window.Owner = this;
-                                        window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+                                        window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
                                         window.ShowDialog();
                                     }));
                             }
