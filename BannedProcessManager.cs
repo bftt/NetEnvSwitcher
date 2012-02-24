@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 
-namespace NetEvnSwitcher
+namespace NetEnvSwitcher
 {
     class BannedProcessManager
     {

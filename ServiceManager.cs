@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using System.ServiceProcess;
 
-namespace NetEvnSwitcher
+namespace NetEnvSwitcher
 {
     public class ServiceManager
     {

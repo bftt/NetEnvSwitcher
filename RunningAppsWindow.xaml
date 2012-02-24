@@ -6,7 +6,7 @@
 	Title="Close all the apps!"
 	Width="535" Height="280" ShowInTaskbar="False"
 	ResizeMode="NoResize"
-	Icon="pack://siteoforigin:,,,/system-software-update.ico"
+	Icon="system-software-update.ico"
 	TextOptions.TextFormattingMode="Display"
 	>
 

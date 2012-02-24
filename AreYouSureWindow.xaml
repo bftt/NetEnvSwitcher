@@ -6,7 +6,7 @@
     Title="Are you sure?"
     Width="Auto" Height="Auto"
     ResizeMode="NoResize"
-    Icon="pack://siteoforigin:,,,/system-software-update.ico"
+    Icon="system-software-update.ico"
     ShowInTaskbar="False"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterOwner"

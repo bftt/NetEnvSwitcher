@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Runtime.InteropServices;
 
-namespace NetEvnSwitcher
+namespace NetEnvSwitcher
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,7 +1,7 @@
-﻿<Application x:Class="NetEvnSwitcher.App"
+﻿<Application x:Class="NetEnvSwitcher.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:NetEvnSwitcher"
+             xmlns:local="clr-namespace:NetEnvSwitcher"
              StartupUri="StartWindow.xaml">
     <Application.Resources>
 

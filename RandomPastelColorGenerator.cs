@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.ComponentModel;
 
-namespace NetEvnSwitcher
+namespace NetEnvSwitcher
 {
     /// <summary>
     /// Provides a range of tasteful random pastel colors

@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NetEvnSwitcher")]
+[assembly: AssemblyTitle("NetEnvSwitcher")]
 [assembly: AssemblyDescription("App for switching multicasts")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Trading Technologies International, Inc.")]
-[assembly: AssemblyProduct("NetEvnSwitcher")]
+[assembly: AssemblyProduct("NetEnvSwitcher")]
 [assembly: AssemblyCopyright("Copyright © Trading Technologies International 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

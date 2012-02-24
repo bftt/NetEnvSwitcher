@@ -5,7 +5,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace NetEvnSwitcher
+namespace NetEnvSwitcher
 {
     public class EnvironmentConfigManager
     {
