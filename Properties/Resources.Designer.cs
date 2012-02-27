@@ -59,5 +59,14 @@ namespace NetEnvSwitcher.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 63104.
+        /// </summary>
+        internal static string ImageSize {
+            get {
+                return ResourceManager.GetString("ImageSize", resourceCulture);
+            }
+        }
     }
 }
