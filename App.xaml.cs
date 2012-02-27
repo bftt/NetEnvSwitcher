@@ -34,10 +34,7 @@ namespace NetEnvSwitcher
             int result = 0;
             try
             {
-                AllocConsole();
-                System.Console.OpenStandardOutput();
-
-                ConsoleLogger logger = new ConsoleLogger();
+                var logger = new Win32ConsoleLogger();
                 ServiceManager serviceManager = new ServiceManager(logger);
                 EnvironmentConfigManager envManager = new EnvironmentConfigManager(logger);
                 
@@ -68,8 +65,6 @@ namespace NetEnvSwitcher
                 }
                 result = 1;
             }
-            FreeConsole();
-
             return result;
         }
 
@@ -93,6 +88,35 @@ namespace NetEnvSwitcher
             CharSet = CharSet.Auto,
             CallingConvention = CallingConvention.StdCall)]
         private static extern bool AttachConsole(int processId);
+
+        [DllImport("kernel32.dll",
+            SetLastError = true,
+            CharSet = CharSet.Auto,
+            CallingConvention = CallingConvention.StdCall)]
+        private static extern IntPtr GetStdHandle(uint nStdHandle);
+
+        class Win32ConsoleLogger : ILogger
+        {
+            IntPtr _console;
+            System.IO.FileStream _fs;
+            System.IO.StreamWriter _writer;
+
+
+            public Win32ConsoleLogger()
+            {
+                uint STD_OUTPUT_HANDLE = 0xfffffff5;
+                _console = GetStdHandle(STD_OUTPUT_HANDLE);
+                _fs = new System.IO.FileStream(_console, System.IO.FileAccess.Write);
+                _writer = new System.IO.StreamWriter(_fs);
+                Console.SetOut(_writer);
+            }
+
+            public void WriteLine(string message)
+            {
+                Console.WriteLine(message);
+            }
+        }
+
     }
 
 
