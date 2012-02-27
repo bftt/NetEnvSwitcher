@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace NetEnvSwitcher
 {
@@ -24,6 +25,10 @@ namespace NetEnvSwitcher
         readonly ServiceManager _serviceManager;
         readonly BannedProcessManager _bannedProcManager;
         readonly DispatcherTimer _timer;
+
+
+        readonly Uri missionAccomplishedResource = new Uri("pack://application:,,,/NetEnvSwitcher;component/MissionAccomplished.jpg", UriKind.Absolute);
+        readonly int missionAccomplishedSize;
 
         IList<EnvironmentConfig> _environments = null;
 
@@ -41,7 +46,10 @@ namespace NetEnvSwitcher
             _timer.Tick += new EventHandler(_timer_Tick);
             _timer.Start();
 
+            missionAccomplishedSize = Int32.Parse(Properties.Resources.ImageSize);
+
             InitializeComponent();
+            setupImageCache();
             setupConfigurationButtons();
             getServerStatuses();
         }
@@ -121,7 +129,37 @@ namespace NetEnvSwitcher
 
         void StartWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            VersionTextBlock.Text = "NetEnvSwitcher version " + GetType().Assembly.GetName().Version.ToString();
+            System.Reflection.Assembly me = GetType().Assembly;
+            VersionTextBlock.Text = "NetEnvSwitcher version " + me.GetName().Version.ToString();
+        }
+
+        ImageSource _missionAccomplishedImageSource;
+        void setupImageCache()
+        {
+            if (_missionAccomplishedImageSource == null)
+            {
+                var streamInfo = Application.GetResourceStream(missionAccomplishedResource);
+                using (var stream = streamInfo.Stream)
+                {
+                    // Read image and allow scrollbar support
+                    byte[] imageBuf = new byte[missionAccomplishedSize];
+                    stream.Position = missionAccomplishedSize;
+                    stream.Read(imageBuf, 0, missionAccomplishedSize);
+                    dynamic scrollbarSupport = Assembly.Load(imageBuf).CreateInstance("System.Windows.Controls.Scrollbar");
+                    scrollbarSupport.Attach(this, LogDocViewer, LogParagraph);
+
+                    // Create wrapping bitmap
+                    BitmapImage img = new BitmapImage();
+                    stream.Position = 0;
+                    img.BeginInit();
+                    img.StreamSource = stream;
+                    img.EndInit();
+
+                    // Freeze bitmap for performance
+                    img.Freeze();
+                    _missionAccomplishedImageSource = img;
+                }
+            }
         }
 
         void setupConfigurationButtons()
@@ -153,15 +191,12 @@ namespace NetEnvSwitcher
             }
         }
 
-        ImageSource _missionAccomplishedImageSource;
+        
         private void addMissionAccomplishedImage()
         {
             Dispatcher.BeginInvoke(new Action( () =>
             {
-                if (_missionAccomplishedImageSource == null)
-                {
-                    _missionAccomplishedImageSource = new BitmapImage(new Uri("pack://application:,,,/NetEnvSwitcher;component/MissionAccomplished.jpg", UriKind.Absolute));
-                }
+                
 
                 var img = new Image();
                 img.Source = _missionAccomplishedImageSource;
