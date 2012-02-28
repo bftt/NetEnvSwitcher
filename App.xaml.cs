@@ -24,7 +24,18 @@ namespace NetEnvSwitcher
             {
                 App app = new App();
                 app.InitializeComponent();
-                app.Run();
+
+                try
+                {
+                    StartWindow sw = new StartWindow();
+                    app.Run(sw);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "ERROR");
+                    return 1;
+                }
+
                 return 0;
             }
         }

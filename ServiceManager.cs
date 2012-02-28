@@ -8,13 +8,101 @@ using System.ServiceProcess;
 
 namespace NetEnvSwitcher
 {
+    class ServiceWrapper
+    {
+        readonly ServiceController _controller;
+        readonly TimeSpan _timeOut;
+        readonly string _displayName;
+
+        public ServiceWrapper(string name, bool isOptional, TimeSpan timeout)
+        {
+            _controller = new ServiceController(name);
+
+            try
+            {
+                var status = _controller.Status;
+                // Dummy logic
+                if (status == ServiceControllerStatus.Running)
+                {
+                    status = ServiceControllerStatus.Stopped;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                _controller = null;
+                if (!isOptional)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                string result = "Unknown";
+
+                if (_controller != null)
+                { 
+                    _controller.Refresh();
+                    result = _controller.Status.ToString();
+                }
+
+                return result;
+            }
+        }
+
+        public void Start()
+        {
+            if (_controller != null)
+            {
+                _controller.Refresh();
+                if (_controller.Status != ServiceControllerStatus.Running &&
+                    _controller.Status != ServiceControllerStatus.StartPending)
+                {
+                    if (_controller.Status != ServiceControllerStatus.StartPending)
+                    {
+                        _controller.Start();
+                    }
+                    _controller.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, _timeOut);
+                }
+            }
+        }
+
+        public void Stop()
+        {
+            if (_controller != null)
+            {
+                _controller.Refresh();
+                if (_controller.Status != ServiceControllerStatus.Stopped &&
+                    _controller.Status != ServiceControllerStatus.StopPending)
+                {
+                    if (_controller.Status != ServiceControllerStatus.StopPending)
+                    {
+                        _controller.Stop();
+                    }
+                    _controller.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, _timeOut);
+                }
+            }
+        }
+
+    }
+
     public class ServiceManager
     {
         readonly ILogger _logger;
-        readonly TimeSpan _serviceWaitTimeout;
-        readonly ServiceController _guardServerController;
-        readonly ServiceController _guardianController;
-        readonly ServiceController _ttmController;
+        readonly ServiceWrapper _guardServerController;
+        readonly ServiceWrapper _guardianController;
+        readonly ServiceWrapper _ttmController;
 
 
         public ServiceManager(ILogger logger) : this(logger, TimeSpan.FromSeconds(20))
@@ -25,35 +113,31 @@ namespace NetEnvSwitcher
         {
             _logger = logger;
 
-            _serviceWaitTimeout    = serviceWaitTimeout;
-            _guardServerController = new ServiceController("TT Guardian Server");
-            _guardianController    = new ServiceController("TT Guardian");
-            _ttmController         = new ServiceController("TT Messaging");
+            _guardServerController = new ServiceWrapper("TT Guardian Server", true, serviceWaitTimeout);
+            _guardianController    = new ServiceWrapper("TT Guardian", false, serviceWaitTimeout);
+            _ttmController         = new ServiceWrapper("TT Messaging", false, serviceWaitTimeout);
         }
 
-        public ServiceControllerStatus GuardServerStatus
+        public string GuardServerStatus
         {
             get
             {
-                _guardServerController.Refresh();
                 return _guardServerController.Status;
             }
         }
 
-        public ServiceControllerStatus GuardianStatus
+        public string GuardianStatus
         {
             get
             {
-                _guardianController.Refresh();
                 return _guardianController.Status;
             }
         }
 
-        public ServiceControllerStatus TtmStatus
+        public string TtmStatus
         {
             get
             {
-                _ttmController.Refresh();
                 return _ttmController.Status;
             }
         }
@@ -76,36 +160,16 @@ namespace NetEnvSwitcher
             stopService(_ttmController);
         }
 
-        void startService(ServiceController service)
+        void startService(ServiceWrapper service)
         {
             _logger.WriteLine("Starting {0} service", service.DisplayName);
-
-            service.Refresh();
-            if (service.Status != ServiceControllerStatus.Running &&
-                service.Status != ServiceControllerStatus.StartPending)
-            {
-                if (service.Status != ServiceControllerStatus.StartPending)
-                {
-                    service.Start();
-                }
-                service.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, _serviceWaitTimeout);
-            }
+            service.Start();
         }
 
-        void stopService(ServiceController service)
+        void stopService(ServiceWrapper service)
         {
             _logger.WriteLine("Stopping {0} service", service.DisplayName);
-
-            service.Refresh();
-            if (service.Status != ServiceControllerStatus.Stopped &&
-                service.Status != ServiceControllerStatus.StopPending)
-            {
-                if (service.Status != ServiceControllerStatus.StopPending)
-                {
-                    service.Stop();
-                }
-                service.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, _serviceWaitTimeout);
-            }
+            service.Stop();
         }
     }
 }
