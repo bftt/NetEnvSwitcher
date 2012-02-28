@@ -93,10 +93,30 @@
                     </TransformGroup>
                 </StackPanel.LayoutTransform>
 
+                <Button x:Name="AppFolderButton"
+                        Margin="0,0,5,0"
+                        Click="AppFolderButton_Click"
+                        ToolTip="Open folder where config files are stored"
+                        Content="Cfg" />
+
+                <Button x:Name="GuardianButton"
+                        Margin="0,0,5,0"
+                        Click="GuardianButton_Click"
+                        ToolTip="Start Guardian MFC"
+                        Content="Guardian" />
+
+                <Button x:Name="ClearLogButton"
+                        Margin="0,0,5,0"
+                        Click="ClearLogButton_Click"
+                        ToolTip="Clear the log window"
+                        Content="Clear log" />
                 
-                <Button x:Name="GuardianButton" Margin="0,0,5,0" Click="GuardianButton_Click">Guardian</Button>
-                <Button x:Name="ClearLogButton" Margin="0,0,5,0" Click="ClearLogButton_Click">Clear log</Button>
-                <ToggleButton x:Name="toggleButton" Content="Log" Margin="0,0,2,0" IsChecked="True" />
+                <ToggleButton x:Name="toggleButton"
+                              Content="Log"
+                              Margin="0,0,2,0"
+                              IsChecked="True"
+                              ToolTip="Toggle log window visibility"
+                              />
             </StackPanel>
             
             

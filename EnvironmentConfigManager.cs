@@ -9,7 +9,7 @@ namespace NetEnvSwitcher
 {
     public class EnvironmentConfigManager
     {
-        readonly DirectoryInfo _myDir;
+        readonly DirectoryInfo _dir;
         readonly FileInfo _ttmConfig;
         readonly ILogger _logger;
 
@@ -19,7 +19,7 @@ namespace NetEnvSwitcher
 
             readRegistry();
 
-            _myDir = new DirectoryInfo(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location));
+            _dir = new DirectoryInfo( FolderHelper.GetAppDataPath() );
             _ttmConfig = new FileInfo(Path.Combine(_configDirectory, "ttmd.cfg"));
         }
 
@@ -27,7 +27,7 @@ namespace NetEnvSwitcher
         {
             List<EnvironmentConfig> result = new List<EnvironmentConfig>();
 
-            var files = _myDir.EnumerateFiles("*.ttmd.cfg");
+            var files = _dir.EnumerateFiles("*.ttmd.cfg");
             foreach (var fileInfo in files)
             {
                 EnvironmentConfig cfg = getConfigFromFile(fileInfo);
@@ -93,7 +93,7 @@ namespace NetEnvSwitcher
 
         private void deleteFiles()
         {
-            var psi = new System.Diagnostics.ProcessStartInfo(Path.Combine(_myDir.FullName, "delete_files.cmd"));
+            var psi = new System.Diagnostics.ProcessStartInfo(Path.Combine(_dir.FullName, "delete_files.cmd"));
             psi.EnvironmentVariables.Add("DATFILES_DIR", _dataDirectory);
             psi.EnvironmentVariables.Add("INSTALL_DIR", _installDirectory);
 

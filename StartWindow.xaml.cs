@@ -130,7 +130,7 @@ namespace NetEnvSwitcher
         void StartWindow_Loaded(object sender, RoutedEventArgs e)
         {
             System.Reflection.Assembly me = GetType().Assembly;
-            VersionTextBlock.Text = "NetEnvSwitcher version " + me.GetName().Version.ToString();
+            VersionTextBlock.Text = "NetEnvSwitcher build " + me.GetName().Version.ToString();
         }
 
         ImageSource _missionAccomplishedImageSource;
@@ -451,6 +451,12 @@ namespace NetEnvSwitcher
         {
             LogParagraph.Inlines.Clear();
         }
+
+        private void AppFolderButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(FolderHelper.GetAppDataPath());
+        }
+        
     }
 
 }
