@@ -169,11 +169,14 @@ namespace NetEnvSwitcher
             ConfigurationsPanel.AddHandler(Button.ClickEvent, new RoutedEventHandler(configButtonClicked));
             ConfigurationsPanel.Children.Clear();
 
+            DataTemplate template = (DataTemplate) Resources["ConfigurationButtonTemplate"];
+
             foreach (var c in _environments)
             {
                 ContentPresenter b = new ContentPresenter();
                 b.Content = c;
                 b.Tag = c;
+                b.ContentTemplate = template;
 
                 ConfigurationsPanel.Children.Add(b);
             }
@@ -211,7 +214,7 @@ namespace NetEnvSwitcher
 
         private void switchConfigurations(EnvironmentConfig config)
         {
-            var w = new NetEnvSwitcher.AreYouSureWindow();
+            var w = new NetEnvSwitcher.AreYouSureWindow(config.Name);
             w.Owner = this;
             w.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 

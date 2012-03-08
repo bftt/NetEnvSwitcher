@@ -12,28 +12,30 @@ using System.Windows.Shapes;
 
 namespace NetEnvSwitcher
 {
-	/// <summary>
-	/// Interaction logic for AreYouSureWindow.xaml
-	/// </summary>
-	public partial class AreYouSureWindow : Window
-	{
-		public AreYouSureWindow()
-		{
-			this.InitializeComponent();
-			
-			// Insert code required on object creation below this point.
-		}
+    /// <summary>
+    /// Interaction logic for AreYouSureWindow.xaml
+    /// </summary>
+    public partial class AreYouSureWindow : Window
+    {
+        public string ConfigurationName { get; private set; }
 
-		private void OkButton_Click(object sender, System.Windows.RoutedEventArgs e)
-		{
-			this.DialogResult = true;
-			Close();
-		}
+        public AreYouSureWindow(string configurationName)
+        {
+            ConfigurationName = configurationName;
+            DataContext = this;
+            InitializeComponent();
+        }
 
-		private void CancelButton_Click(object sender, System.Windows.RoutedEventArgs e)
-		{
-			this.DialogResult = false;
-			Close();
-		}
-	}
+        private void OkButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            Close();
+        }
+
+        private void CancelButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            Close();
+        }
+    }
 }

@@ -23,7 +23,12 @@
             <TextBlock HorizontalAlignment="Center" Text="Close any TT apps that are running." TextWrapping="Wrap"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0">Proceed with the environment switch?</TextBlock>
             <Button x:Name="CancelButton" Margin="10,50,10,10" Foreground="#FFE02424" IsCancel="True" IsDefault="True" Click="CancelButton_Click">Oh wait! No! Abort! Abort!</Button>
-            <Button x:Name="OkButton" Margin="10" Click="OkButton_Click">Yes, do the switch</Button>
+            <Button x:Name="OkButton" Margin="10" Click="OkButton_Click">
+            	<StackPanel>
+            		<TextBlock>Yes, switch me to</TextBlock>
+					<TextBlock TextAlignment="Center" Text="{Binding ConfigurationName}" FontSize="16" />
+				</StackPanel>
+			</Button>
         </StackPanel>
         <Image VerticalAlignment="Top" Source="AreYouSure.jpg"/>
     </Grid>
