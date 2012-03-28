@@ -11,11 +11,13 @@ namespace NetEnvSwitcher
     class ServiceWrapper
     {
         readonly ServiceController _controller;
-        readonly TimeSpan _timeOut;
         readonly string _displayName;
+        readonly TimeSpan _timeOut;
 
         public ServiceWrapper(string name, bool isOptional, TimeSpan timeout)
         {
+            _timeOut = timeout;
+            _displayName = name;
             _controller = new ServiceController(name);
 
             try
@@ -26,6 +28,7 @@ namespace NetEnvSwitcher
                 {
                     status = ServiceControllerStatus.Stopped;
                 }
+                _displayName = _controller.DisplayName;
             }
             catch (InvalidOperationException)
             {
@@ -95,6 +98,10 @@ namespace NetEnvSwitcher
             }
         }
 
+        public override string ToString()
+        {
+            return DisplayName;
+        }
     }
 
     public class ServiceManager

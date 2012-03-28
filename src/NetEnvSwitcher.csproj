@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">Any CPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{23D7CD59-A44C-4F76-92A8-9651DEECCF6C}</ProjectGuid>
@@ -44,6 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <OutputPath>..\bin_debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>pdbonly</DebugType>
@@ -51,6 +52,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <OutputPath>..\bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>NetEnvSwitcher.exe.manifest</ApplicationManifest>
@@ -171,24 +173,12 @@
     </EmbeddedResource>
     <None Include="NetEnvSwitcher.exe.manifest" />
     <None Include="NetEnvSwitcher.pfx" />
-    <None Include="UserFiles\14th floor.ttmd.cfg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UserFiles\banned_apps.cfg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UserFiles\delete_files.cmd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UserFiles\Mantis.NoGS.ttmd.cfg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UserFiles\Multibroker.ttmd.cfg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UserFiles\Peregrine.NoGS.ttmd.cfg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <CopyMe Include="UserFiles\14th floor.ttmd.cfg" />
+    <CopyMe Include="UserFiles\banned_apps.cfg" />
+    <CopyMe Include="UserFiles\delete_files.cmd" />
+    <CopyMe Include="UserFiles\Mantis.NoGS.ttmd.cfg" />
+    <CopyMe Include="UserFiles\Multibroker.ttmd.cfg" />
+    <CopyMe Include="UserFiles\Peregrine.NoGS.ttmd.cfg" />
     <Resource Include="MissionAccomplished.jpg" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -202,5 +192,8 @@
     <Resource Include="AreYouSure.jpg" />
     <Resource Include="CloseAllTheApps.jpg" />
   </ItemGroup>
+  <Target Name="Copy user files to out dir" AfterTargets="Build">
+    <Copy SourceFiles="@(CopyMe)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

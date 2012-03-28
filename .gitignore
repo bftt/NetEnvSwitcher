@@ -23,10 +23,12 @@
 *.sbr
 *.sdf
 *.opensdf
+*.dat
 *.unsuccessfulbuild
 ipch/
 obj/
-[Bb]in
+[Bb]in/
+[Bb]in_debug/
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
