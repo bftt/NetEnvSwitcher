@@ -209,7 +209,8 @@ namespace NetEnvSwitcher
             /// <summary>
             /// Guardian Registry key to TT's core configuration.
             /// </summary>
-            const string CONFIG_DIR_REG_KEY = @"HKEY_LOCAL_MACHINE\Software\Trading Technologies\AConfig";
+            const string CONFIG_DIR_REG_KEY    = @"HKEY_LOCAL_MACHINE\Software\Trading Technologies\AConfig";
+            const string CONFIG_DIR_REG_KEY_64 = @"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Trading Technologies\AConfig";
 
             /// <summary>
             /// Guardian Registry value specifying TT's config directory.
@@ -219,7 +220,8 @@ namespace NetEnvSwitcher
             /// <summary>
             /// Installation Registry key to TT's core configuration.
             /// </summary>
-            const string INSTALLED_CONFIG_DIR_REG_KEY = @"HKEY_LOCAL_MACHINE\Software\Trading Technologies\Installation";
+            const string INSTALLED_CONFIG_DIR_REG_KEY    = @"HKEY_LOCAL_MACHINE\Software\Trading Technologies\Installation";
+            const string INSTALLED_CONFIG_DIR_REG_KEY_64 = @"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Trading Technologies\Installation";
 
             /// <summary>
             /// Installation Registry value specifying TT's config directory.
@@ -231,16 +233,32 @@ namespace NetEnvSwitcher
 
             // Read config dir from installed reg
             _configDirectory = (string)Microsoft.Win32.Registry.GetValue(INSTALLED_CONFIG_DIR_REG_KEY, INSTALLED_CONFIG_DIR_REG_VAL, null);
+            if (_configDirectory == null)
+            {
+                _configDirectory = (string)Microsoft.Win32.Registry.GetValue(INSTALLED_CONFIG_DIR_REG_KEY_64, INSTALLED_CONFIG_DIR_REG_VAL, null);
+            }
 
             _dataDirectory = (string)Microsoft.Win32.Registry.GetValue(INSTALLED_CONFIG_DIR_REG_KEY, INSTALLED_DATFILE_DIR_REG_VAL, null);
+            if (_dataDirectory == null)
+            {
+                _dataDirectory = (string)Microsoft.Win32.Registry.GetValue(INSTALLED_CONFIG_DIR_REG_KEY_64, INSTALLED_DATFILE_DIR_REG_VAL, null);
+            }
 
             _installDirectory = (string)Microsoft.Win32.Registry.GetValue(INSTALLED_CONFIG_DIR_REG_KEY, INSTALLED_INSTALLROOT_DIR_REG_VAL, null);
+            if (_installDirectory == null)
+            {
+                _installDirectory = (string)Microsoft.Win32.Registry.GetValue(INSTALLED_CONFIG_DIR_REG_KEY_64, INSTALLED_INSTALLROOT_DIR_REG_VAL, null);
+            }
 
             // Make sure we actually read a dir from registry
             if (_configDirectory == null)
             {
                 // If installed reg doesn't exist then Read config dir from guardian reg
                 _configDirectory = (string)Microsoft.Win32.Registry.GetValue(CONFIG_DIR_REG_KEY, CONFIG_DIR_REG_VAL, null);
+                if (_configDirectory == null)
+                {
+                    _configDirectory = (string)Microsoft.Win32.Registry.GetValue(CONFIG_DIR_REG_KEY_64, CONFIG_DIR_REG_VAL, null);
+                }
 
                 // Make sure we actually read a dir from registry
                 if (_configDirectory == null)
