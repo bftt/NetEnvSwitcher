@@ -47,9 +47,9 @@ namespace NetEnvSwitcher
         {
             EnvironmentConfig cfg = new EnvironmentConfig();
             cfg.FileInfo = fileInfo;
-            cfg.IsGuardServerAllowed = !System.Text.RegularExpressions.Regex.IsMatch(fileInfo.Name, "NoGS", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            cfg.IsGuardServerAllowed = System.Text.RegularExpressions.Regex.IsMatch(fileInfo.Name, "GS", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
             cfg.Name = System.Text.RegularExpressions.Regex.Replace(fileInfo.Name, @"\.ttmd\.cfg", String.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-            cfg.Name = System.Text.RegularExpressions.Regex.Replace(cfg.Name, @"\.NoGS", String.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            cfg.Name = System.Text.RegularExpressions.Regex.Replace(cfg.Name, @"\.GS", String.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
 
             using (var reader = fileInfo.OpenRead())
